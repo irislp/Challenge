@@ -11,7 +11,6 @@ import {
   VStack,
   Heading,
   Text,
-  Button,
   Card,
   CardBody,
   HStack,
@@ -43,10 +42,6 @@ export default function Home() {
 
   const handleNavigateToProfile = () => {
     router.push('/profile');
-  };
-
-  const handleNavigateToReactFinland = () => {
-    router.push('/react-finland');
   };
 
   // Show blocking modal if user hasn't completed onboarding
@@ -128,23 +123,6 @@ export default function Home() {
                   </VStack>
                 </CardBody>
               </Card>
-              //the React Finland API is not live atm, so we're not using it
-              {/* <Card 
-                cursor="pointer" 
-                onClick={handleNavigateToReactFinland}
-                _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
-                shadow="md"
-              >
-                <CardBody textAlign="center">
-                  <VStack spacing={3}>
-                    <Text fontSize="2xl">🇫🇮</Text>
-                    <Heading size="sm">React Finland</Heading>
-                    <Text fontSize="sm" color="gray.600">
-                      View React Finland conferences & talks
-                    </Text>
-                  </VStack>
-                </CardBody>
-              </Card> */}
             </HStack>
           </Box>
         </VStack>

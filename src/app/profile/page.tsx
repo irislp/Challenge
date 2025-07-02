@@ -36,7 +36,7 @@ export default function ProfilePage() {
 
   // AlertDialog state
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const cancelRef = useRef<any>(null);
+  const cancelRef = useRef(null);
 
   const handleOpenAlert = () => setIsAlertOpen(true);
   const handleCloseAlert = () => setIsAlertOpen(false);
@@ -144,7 +144,7 @@ export default function ProfilePage() {
               </Box>
               <AlertDialog
                 isOpen={isAlertOpen}
-                leastDestructiveRef={cancelRef}
+                leastDestructiveRef={cancelRef as unknown as React.RefObject<HTMLElement>}
                 onClose={handleCloseAlert}
               >
                 <AlertDialogOverlay />

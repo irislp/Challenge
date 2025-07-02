@@ -18,11 +18,48 @@ import {
 } from '@chakra-ui/react';
 import Layout from '../../components/Layout';
 import { GET_REACT_FINLAND_DATA } from '../../graphql/queries';
+import Image from 'next/image';
 
 const API_URL = 'https://api.react-finland.fi/graphql';
 
+interface Social {
+  type: string;
+  link: string;
+}
+
+interface Speaker {
+  name: string;
+  about: string;
+  image?: { url: string };
+  socials?: Social[];
+}
+
+interface Session {
+  title: string;
+  description: string;
+  speakers: Speaker[];
+}
+
+interface Conference {
+  name: string;
+  year: number;
+  startDate: string;
+  endDate: string;
+  organizers: { name: string }[];
+  sessions: Session[];
+}
+
+interface Series {
+  name: string;
+  conferences: Conference[];
+}
+
+interface ReactFinlandData {
+  series: Series[];
+}
+
 export default function ReactFinlandPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ReactFinlandData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,8 +76,8 @@ export default function ReactFinlandPage() {
         setData(res.data);
         setLoading(false);
       })
-      .catch((err) => {
-        setError('Failed to fetch React Finland data');
+      .catch((err: unknown) => {
+        setError(`Failed to fetch React Finland data${err}`);
         setLoading(false);
       });
   }, []);
@@ -67,13 +104,13 @@ export default function ReactFinlandPage() {
         )}
         {data && data.series && (
           <VStack spacing={8} align="stretch">
-            {data.series.map((series: any, sIdx: number) => (
+            {data.series.map((series, sIdx) => (
               <Box key={series.name + sIdx}>
                 <Heading size="lg" mb={4}>
                   {series.name}
                 </Heading>
                 <VStack spacing={8} align="stretch">
-                  {series.conferences.map((conf: any, idx: number) => (
+                  {series.conferences.map((conf, idx) => (
                     <Card key={conf.name + conf.year + idx} shadow="md">
                       <CardBody>
                         <HStack justify="space-between" align="start" mb={2}>
@@ -85,13 +122,13 @@ export default function ReactFinlandPage() {
                               {conf.startDate} - {conf.endDate}
                             </Text>
                             <Text color="gray.600" fontSize="sm">
-                              Organizers: {conf.organizers.map((o: any) => o.name).join(', ')}
+                              Organizers: {conf.organizers.map((o) => o.name).join(', ')}
                             </Text>
                           </Box>
                           <Badge colorScheme="purple">{conf.sessions.length} Sessions</Badge>
                         </HStack>
                         <VStack align="stretch" spacing={4} mt={4}>
-                          {conf.sessions.slice(0, 5).map((session: any, i: number) => (
+                          {conf.sessions.slice(0, 5).map((session, i) => (
                             <Box key={session.title + i} p={4} bg="gray.50" borderRadius="md">
                               <Heading size="sm" mb={1}>
                                 {session.title}
@@ -100,10 +137,10 @@ export default function ReactFinlandPage() {
                                 {session.description}
                               </Text>
                               <HStack spacing={3}>
-                                {session.speakers.map((sp: any, j: number) => (
+                                {session.speakers.map((sp, j) => (
                                   <HStack key={sp.name + j} spacing={2}>
                                     {sp.image && sp.image.url && (
-                                      <img
+                                      <Image
                                         src={sp.image.url}
                                         alt={sp.name}
                                         width={32}
@@ -120,7 +157,7 @@ export default function ReactFinlandPage() {
                                       </Text>
                                       {sp.socials && sp.socials.length > 0 && (
                                         <HStack spacing={1} mt={1}>
-                                          {sp.socials.map((soc: any, k: number) => (
+                                          {sp.socials.map((soc, k) => (
                                             <Link
                                               key={soc.type + k}
                                               href={soc.link}
