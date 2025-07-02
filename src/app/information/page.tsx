@@ -21,12 +21,23 @@ function InformationContent() {
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const currentPage = parseInt(searchParams.get('page') || '1');
+  let currentPage = parseInt(searchParams.get('page') || '1');
+  if (isNaN(currentPage)) currentPage = 1;
+  // We'll check bounds after data is loaded
 
   const { loading, error, data } = useQuery(GET_CHARACTERS, {
     variables: { page: currentPage },
     fetchPolicy: 'cache-and-network',
   });
+
+  // Handle out-of-bounds and negative page numbers
+  if (!loading && data && data.characters && data.characters.info) {
+    const info = data.characters.info;
+    if (currentPage < 1 || currentPage > info.pages || isNaN(currentPage)) {
+      router.replace('/information?page=1');
+      return null;
+    }
+  }
 
   const handleCharacterClick = (character: Character) => {
     setSelectedCharacter(character);
