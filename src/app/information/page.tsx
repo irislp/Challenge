@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button, Spinner, Alert, AlertIcon, Heading, Text, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@apollo/client';
@@ -107,7 +107,9 @@ export default function InformationPage() {
   return (
     <ApolloProvider client={client}>
       <Layout>
-        <InformationContent />
+        <Suspense fallback={<div>Loading...</div>}>
+          <InformationContent />
+        </Suspense>
       </Layout>
     </ApolloProvider>
   );
