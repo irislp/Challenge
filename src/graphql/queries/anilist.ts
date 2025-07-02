@@ -40,4 +40,4 @@ export const GET_MANGA_DATA = gql`
       }
     }
   }
-`; 
+`;

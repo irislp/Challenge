@@ -1,3 +1,5 @@
+// Information Page: Displays a paginated list of Rick & Morty characters using GraphQL. Allows viewing character details in a modal. User can navigate pages via URL query params.
+
 'use client';
 
 import { useState } from 'react';

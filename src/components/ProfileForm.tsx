@@ -1,3 +1,5 @@
+// ProfileForm: Form for displaying and editing user profile information (username, job title, etc.).
+
 import { VStack, Heading, Text, Input, Button, FormLabel, Badge } from '@chakra-ui/react';
 import styles from '../app/profile/page.module.css';
 

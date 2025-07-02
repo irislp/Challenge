@@ -1,3 +1,5 @@
+// CharacterModal: Modal dialog to show detailed info about a selected Rick & Morty character.
+
 import {
   Modal,
   ModalOverlay,

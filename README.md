@@ -21,22 +21,27 @@ A modern Next.js app with Chakra UI, user onboarding, persistent profile, and li
 ## 🚀 Getting Started
 
 ### 1. Install dependencies
+
 ```bash
 npm install
 ```
 
 ### 2. Run the development server
+
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ### 3. Format code with Prettier
+
 ```bash
 npm run format
 ```
 
 ### 4. Lint code
+
 ```bash
 npm run lint
 ```

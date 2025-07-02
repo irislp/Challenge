@@ -1,3 +1,5 @@
+// CharacterCard: Card component to display summary info for a Rick & Morty character. Clickable to open modal.
+
 import { Card, CardBody, Image, Text, Heading, Badge, Box } from '@chakra-ui/react';
 import styles from '../app/information/page.module.css';
 

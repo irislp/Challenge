@@ -9,8 +9,8 @@ export const GET_REACT_FINLAND_DATA = gql`
         year
         startDate
         endDate
-        organizers { 
-          name 
+        organizers {
+          name
         }
         sessions {
           title
@@ -18,16 +18,16 @@ export const GET_REACT_FINLAND_DATA = gql`
           speakers {
             name
             about
-            image { 
-              url 
+            image {
+              url
             }
-            socials { 
-              type 
-              link 
+            socials {
+              type
+              link
             }
           }
         }
       }
     }
   }
-`; 
+`;

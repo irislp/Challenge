@@ -30,8 +30,8 @@ export default function ReactFinlandPage() {
     fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        query: GET_REACT_FINLAND_DATA.loc?.source.body 
+      body: JSON.stringify({
+        query: GET_REACT_FINLAND_DATA.loc?.source.body,
       }),
     })
       .then((res) => res.json())

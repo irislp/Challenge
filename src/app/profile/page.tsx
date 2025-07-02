@@ -1,3 +1,5 @@
+// Profile Page: Lets the user view and edit their profile information, and reset (logout) their user data. Uses Chakra UI and localStorage for persistence.
+
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
