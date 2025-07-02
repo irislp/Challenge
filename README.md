@@ -1,1 +1,1 @@
-# techChallenge
+# Challenge
