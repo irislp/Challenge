@@ -1,103 +1,154 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { UserData, getUserData } from '../lib/userStorage';
+import UserOnboardingModal from '../components/UserOnboardingModal';
+import Layout from '../components/Layout';
+import {
+  Container,
+  Box,
+  VStack,
+  Heading,
+  Text,
+  Button,
+  Card,
+  CardBody,
+  HStack,
+  Badge,
+} from '@chakra-ui/react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [showOnboardingModal, setShowOnboardingModal] = useState(false);
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  useEffect(() => {
+    const savedData = getUserData();
+    if (savedData && savedData.isCompleted) {
+      setUserData(savedData);
+    } else {
+      setShowOnboardingModal(true);
+    }
+  }, []);
+
+  const handleOnboardingComplete = (data: UserData) => {
+    setUserData(data);
+    setShowOnboardingModal(false);
+  };
+
+  const handleNavigateToInformation = () => {
+    router.push('/information');
+  };
+
+  const handleNavigateToProfile = () => {
+    router.push('/profile');
+  };
+
+  const handleNavigateToReactFinland = () => {
+    router.push('/react-finland');
+  };
+
+  // Show blocking modal if user hasn't completed onboarding
+  if (!userData) {
+    return (
+      <UserOnboardingModal isOpen={showOnboardingModal} onComplete={handleOnboardingComplete} />
+    );
+  }
+
+  return (
+    <Layout>
+      <Container maxW="container.xl" py={8}>
+        <VStack spacing={8} align="stretch">
+          {/* Welcome Section */}
+          <Box textAlign="center">
+            <Heading mb={4}>Welcome to Challenge App</Heading>
+            <Text fontSize="lg" color="gray.600">
+              Explore Rick & Morty characters and manage your profile
+            </Text>
+          </Box>
+
+          {/* User Info Card */}
+          <Card>
+            <CardBody>
+              <VStack spacing={4} align="stretch">
+                <HStack justify="space-between" align="center">
+                  <Heading size="md">Your Profile</Heading>
+                  <Badge colorScheme="green">Active</Badge>
+                </HStack>
+
+                <Box>
+                  <Text fontWeight="bold">Username:</Text>
+                  <Text>{userData.username}</Text>
+                </Box>
+
+                <Box>
+                  <Text fontWeight="bold">Job Title:</Text>
+                  <Text>{userData.jobTitle}</Text>
+                </Box>
+              </VStack>
+            </CardBody>
+          </Card>
+
+          {/* Navigation Cards */}
+          <Box>
+            <Heading size="md" mb={4}>
+              Quick Actions
+            </Heading>
+            <HStack spacing={6} justify="center">
+              <Card
+                cursor="pointer"
+                onClick={handleNavigateToInformation}
+                _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                shadow="md"
+              >
+                <CardBody textAlign="center">
+                  <VStack spacing={3}>
+                    <Text fontSize="2xl">📚</Text>
+                    <Heading size="sm">Information</Heading>
+                    <Text fontSize="sm" color="gray.600">
+                      Browse Rick & Morty characters
+                    </Text>
+                  </VStack>
+                </CardBody>
+              </Card>
+              <Card
+                cursor="pointer"
+                onClick={handleNavigateToProfile}
+                _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                shadow="md"
+              >
+                <CardBody textAlign="center">
+                  <VStack spacing={3}>
+                    <Text fontSize="2xl">👤</Text>
+                    <Heading size="sm">Profile</Heading>
+                    <Text fontSize="sm" color="gray.600">
+                      Update your information
+                    </Text>
+                  </VStack>
+                </CardBody>
+              </Card>
+              //the React Finland API is not live atm, so we're not using it
+              {/* <Card 
+                cursor="pointer" 
+                onClick={handleNavigateToReactFinland}
+                _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                shadow="md"
+              >
+                <CardBody textAlign="center">
+                  <VStack spacing={3}>
+                    <Text fontSize="2xl">🇫🇮</Text>
+                    <Heading size="sm">React Finland</Heading>
+                    <Text fontSize="sm" color="gray.600">
+                      View React Finland conferences & talks
+                    </Text>
+                  </VStack>
+                </CardBody>
+              </Card> */}
+            </HStack>
+          </Box>
+        </VStack>
+      </Container>
+    </Layout>
   );
 }
